@@ -61,7 +61,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                            <asp:TextBox ID="txtImageExcel" runat="server"></asp:TextBox></td>
+                                            <asp:FileUpload ID="uploadFile" runat="server"  /></td>
                                         <td>
                                             <asp:Button Text="Import" ID="btnImageImport" runat="server" OnClick="btnImageImport_Click" /></td>
                                     </tr>

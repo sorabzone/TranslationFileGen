@@ -21,6 +21,7 @@ namespace TranslationFileGen
             mvTables.ActiveViewIndex = 0;
         }
 
+        #region Tab Change Events
         protected void Tab1_Click(object sender, EventArgs e)
         {
             mvTables.ActiveViewIndex = 0;
@@ -40,7 +41,9 @@ namespace TranslationFileGen
         {
             mvTables.ActiveViewIndex = 3;
         }
+        #endregion
 
+        #region Image
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             SQLiteDataReader objReader = null;
@@ -118,10 +121,8 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-
                             cmd.CommandText = "INSERT INTO tblSKU_ImageID (sku, image_id, updateddate) VALUES ('" + txtNewSku.Text + "', '" + txtNewImage.Text + "', CURRENT_TIMESTAMP);";
                             cmd.ExecuteNonQuery();
-
                         }
                         conn.Close();
                     }
@@ -177,5 +178,324 @@ namespace TranslationFileGen
                 cmd.Dispose();
             }
         }
+        #endregion
+
+        #region Chinese Name
+        protected void btnSearchC_Click(object sender, EventArgs e)
+        {
+            SQLiteDataReader objReader = null;
+            SQLiteCommand cmd = null;
+            try
+            {
+                if (!(String.IsNullOrEmpty(txtSkuC.Text)))
+                {
+                    using (var conn = new SQLiteConnection(connString))
+                    {
+                        conn.Open();
+                        using (cmd = new SQLiteCommand(conn))
+                        {
+                            cmd.CommandText = "SELECT sku, englishname, chinesename, chinesedesc FROM tblSKU_Chinese WHERE sku = '" + txtSkuC.Text + "';";
+                            objReader = cmd.ExecuteReader();
+
+                            if (objReader.Read())
+                            {
+                                txtChineseName.Text = Convert.ToString(objReader["chinesename"]);
+                                txtChineseDesc.Text = Convert.ToString(objReader["chinesedesc"]);
+                            }
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cmd.Dispose();
+                objReader = null;
+            }
+        }
+
+        protected void btnUpdateC_Click(object sender, EventArgs e)
+        {
+            SQLiteCommand cmd = null;
+            try
+            {
+                if (!(String.IsNullOrEmpty(txtSkuC.Text) || String.IsNullOrEmpty(txtChineseName.Text) || String.IsNullOrEmpty(txtChineseDesc.Text)))
+                {
+                    using (var conn = new SQLiteConnection(connString))
+                    {
+                        conn.Open();
+                        using (cmd = new SQLiteCommand(conn))
+                        {
+                            cmd.CommandText = "UPDATE tblSKU_Chinese SET chinesename = " + txtChineseName.Text + ", chinesedesc = " + txtChineseDesc.Text + ", updateddate = CURRENT_TIMESTAMP WHERE sku = '" + txtSkuC.Text + "';";
+                            cmd.ExecuteNonQuery();
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+        }
+
+        protected void btnAddC_Click(object sender, EventArgs e)
+        {
+            SQLiteCommand cmd = null;
+            try
+            {
+                if (!(String.IsNullOrEmpty(txtNewSkuC.Text) || String.IsNullOrEmpty(txtNewChineseName.Text) || String.IsNullOrEmpty(txtNewChineseDesc.Text)))
+                {
+                    using (var conn = new SQLiteConnection(connString))
+                    {
+                        conn.Open();
+                        using (cmd = new SQLiteCommand(conn))
+                        {
+                            cmd.CommandText = "INSERT INTO tblSKU_Chinese (sku, chinesename, chinesedesc, updateddate) VALUES ('" + txtNewSkuC.Text + "', '" + txtNewChineseName.Text + "', '" + txtNewChineseDesc.Text + "', CURRENT_TIMESTAMP);";
+                            cmd.ExecuteNonQuery();
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+        }
+
+        protected void btnChineseImport_Click(object sender, EventArgs e)
+        {
+            SQLiteCommand cmd = null;
+            try
+            {
+                string filecontent = Convert.ToBase64String(uploadFileChinese.FileBytes);
+
+                if (Path.GetExtension(uploadFileChinese.FileName).Equals(".xlsx"))
+                {
+                    var excel = new ExcelPackage(uploadFileChinese.FileContent);
+                    var dt = excel.ToDataTable();
+
+                    using (var conn = new SQLiteConnection(connString))
+                    {
+                        conn.Open();
+                        using (cmd = new SQLiteCommand(conn))
+                        {
+                            using (var transaction = conn.BeginTransaction())
+                            {
+                                foreach (DataRow row in dt.Rows)
+                                {
+                                    cmd.CommandText = "INSERT INTO tblSKU_Chinese (sku, chinesename, chinesedesc, updateddate) VALUES ('" + Convert.ToString(row["sku"]) + "', '" + Convert.ToString(row["chinesename"]) + "', '" + Convert.ToString(row["chinesedesc"]) + "', CURRENT_TIMESTAMP);";
+                                    cmd.ExecuteNonQuery();
+                                }
+                                transaction.Commit();
+                            }
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+        }
+        #endregion
+
+        #region Meta Data
+        protected void btnSearchM_Click(object sender, EventArgs e)
+        {
+            SQLiteDataReader objReader = null;
+            SQLiteCommand cmd = null;
+            try
+            {
+                if (!(String.IsNullOrEmpty(txtMetaData.Text)))
+                {
+                    using (var conn = new SQLiteConnection(connString))
+                    {
+                        conn.Open();
+                        using (cmd = new SQLiteCommand(conn))
+                        {
+                            cmd.CommandText = "SELECT englishname, chinesename, chinesedesc FROM tblMetadata WHERE englishname = '" + txtMetaData.Text + "';";
+                            objReader = cmd.ExecuteReader();
+
+                            if (objReader.Read())
+                            {
+                                txtChineseTrans.Text = Convert.ToString(objReader["chinesename"]);
+                            }
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cmd.Dispose();
+                objReader = null;
+            }
+        }
+
+        protected void btnUpdateM_Click1(object sender, EventArgs e)
+        {
+            SQLiteCommand cmd = null;
+            try
+            {
+                if (!(String.IsNullOrEmpty(txtMetaData.Text) || String.IsNullOrEmpty(txtChineseTrans.Text)))
+                {
+                    using (var conn = new SQLiteConnection(connString))
+                    {
+                        conn.Open();
+                        using (cmd = new SQLiteCommand(conn))
+                        {
+                            cmd.CommandText = "UPDATE tblMetadata SET chinesename = " + txtChineseTrans.Text + " WHERE englishname = '" + txtMetaData.Text + "';";
+                            cmd.ExecuteNonQuery();
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+        }
+
+        protected void btnAddM_Click(object sender, EventArgs e)
+        {
+            SQLiteCommand cmd = null;
+            try
+            {
+                if (!(String.IsNullOrEmpty(txtNewMetaData.Text) || String.IsNullOrEmpty(txtNewChineseTrans.Text)))
+                {
+                    using (var conn = new SQLiteConnection(connString))
+                    {
+                        conn.Open();
+                        using (cmd = new SQLiteCommand(conn))
+                        {
+                            cmd.CommandText = "INSERT INTO tblMetadata (englishname, chinesename) VALUES ('" + txtNewMetaData.Text + "', '" + txtNewChineseTrans.Text + "');";
+                            cmd.ExecuteNonQuery();
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+        }
+
+        protected void btnMetaDataImport_Click(object sender, EventArgs e)
+        {
+            SQLiteCommand cmd = null;
+            try
+            {
+                string filecontent = Convert.ToBase64String(uploadFileMetaData.FileBytes);
+
+                if (Path.GetExtension(uploadFileMetaData.FileName).Equals(".xlsx"))
+                {
+                    var excel = new ExcelPackage(uploadFileMetaData.FileContent);
+                    var dt = excel.ToDataTable();
+
+                    using (var conn = new SQLiteConnection(connString))
+                    {
+                        conn.Open();
+                        using (cmd = new SQLiteCommand(conn))
+                        {
+                            using (var transaction = conn.BeginTransaction())
+                            {
+                                foreach (DataRow row in dt.Rows)
+                                {
+                                    cmd.CommandText = "INSERT INTO tblMetadata (englishname, chinesename) VALUES ('" + Convert.ToString(row["englishname"]) + "', '" + Convert.ToString(row["chinesename"]) + "');";
+                                    cmd.ExecuteNonQuery();
+                                }
+                                transaction.Commit();
+                            }
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+        }
+        #endregion
+
+        #region Category
+        protected void btnCategoryImport_Click(object sender, EventArgs e)
+        {
+            SQLiteCommand cmd = null;
+            try
+            {
+                string filecontent = Convert.ToBase64String(uploadFileCategory.FileBytes);
+
+                if (Path.GetExtension(uploadFileCategory.FileName).Equals(".xlsx"))
+                {
+                    var excel = new ExcelPackage(uploadFileCategory.FileContent);
+                    var dt = excel.ToDataTable();
+
+                    using (var conn = new SQLiteConnection(connString))
+                    {
+                        conn.Open();
+                        using (cmd = new SQLiteCommand(conn))
+                        {
+                            using (var transaction = conn.BeginTransaction())
+                            {
+                                foreach (DataRow row in dt.Rows)
+                                {
+                                    cmd.CommandText = "INSERT INTO tblCategory_raw (category, code, level) VALUES ('" + Convert.ToString(row["category"]) + "', '" + Convert.ToString(row["code"]) + "', " + Convert.ToInt32(row["level"]) + ");";
+                                    cmd.ExecuteNonQuery();
+                                }
+                                transaction.Commit();
+                            }
+                        }
+                        conn.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+        }
+        #endregion
     }
 }

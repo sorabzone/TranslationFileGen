@@ -13,22 +13,13 @@ namespace TranslationFileGen {
     public partial class ManageTables {
         
         /// <summary>
-        /// form1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
-        /// <summary>
         /// Tab1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Tab1;
+        protected global::System.Web.UI.WebControls.LinkButton Tab1;
         
         /// <summary>
         /// Tab2 control.
@@ -37,7 +28,7 @@ namespace TranslationFileGen {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Tab2;
+        protected global::System.Web.UI.WebControls.LinkButton Tab2;
         
         /// <summary>
         /// Tab3 control.
@@ -46,7 +37,7 @@ namespace TranslationFileGen {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Tab3;
+        protected global::System.Web.UI.WebControls.LinkButton Tab3;
         
         /// <summary>
         /// Tab4 control.
@@ -55,7 +46,7 @@ namespace TranslationFileGen {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Tab4;
+        protected global::System.Web.UI.WebControls.LinkButton Tab4;
         
         /// <summary>
         /// mvTables control.

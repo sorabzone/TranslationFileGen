@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using OfficeOpenXml;
+﻿using OfficeOpenXml;
+using System;
 using System.Data;
-using System.Data.SqlClient;
-using System.IO;
 using System.Data.SQLite;
+using System.IO;
+using System.Web.UI;
 
 namespace TranslationFileGen
 {
@@ -19,27 +14,67 @@ namespace TranslationFileGen
         protected void Page_Load(object sender, EventArgs e)
         {
             mvTables.ActiveViewIndex = 0;
+            Tab1.Enabled = false;
+            Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
+            Tab2.Enabled = true;
+            Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab3.Enabled = true;
+            Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab4.Enabled = true;
+            Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
         }
 
         #region Tab Change Events
         protected void Tab1_Click(object sender, EventArgs e)
         {
             mvTables.ActiveViewIndex = 0;
+            Tab1.Enabled = false;
+            Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
+            Tab2.Enabled = true;
+            Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab3.Enabled = true;
+            Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab4.Enabled = true;
+            Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
         }
 
         protected void Tab2_Click(object sender, EventArgs e)
         {
             mvTables.ActiveViewIndex = 1;
+            Tab1.Enabled = true;
+            Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab2.Enabled = false;
+            Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
+            Tab3.Enabled = true;
+            Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab4.Enabled = true;
+            Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
         }
 
         protected void Tab3_Click(object sender, EventArgs e)
         {
             mvTables.ActiveViewIndex = 2;
+            Tab1.Enabled = true;
+            Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab2.Enabled = true;
+            Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab3.Enabled = false;
+            Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
+            Tab4.Enabled = true;
+            Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
         }
 
         protected void Tab4_Click(object sender, EventArgs e)
         {
             mvTables.ActiveViewIndex = 3;
+            Tab1.Enabled = true;
+            Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab2.Enabled = true;
+            Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab3.Enabled = true;
+            Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            Tab4.Enabled = false;
+            Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
         }
         #endregion
 
@@ -92,7 +127,7 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "UPDATE tblSKU_ImageID SET image_id = " + txtImage.Text + ", updateddate = CURRENT_TIMESTAMP WHERE sku = '" + txtSku.Text + "';";
+                            cmd.CommandText = "UPDATE tblSKU_ImageID SET Image_Id = " + txtImage.Text + ", UpdatedDate = CURRENT_TIMESTAMP WHERE SKU = '" + txtSku.Text + "';";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -121,7 +156,7 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "INSERT INTO tblSKU_ImageID (sku, image_id, updateddate) VALUES ('" + txtNewSku.Text + "', '" + txtNewImage.Text + "', CURRENT_TIMESTAMP);";
+                            cmd.CommandText = "INSERT INTO tblSKU_ImageID (SKU, Image_Id, UpdatedDate) VALUES ('" + txtNewSku.Text + "', '" + txtNewImage.Text + "', CURRENT_TIMESTAMP);";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -159,7 +194,7 @@ namespace TranslationFileGen
                             {
                                 foreach (DataRow row in dt.Rows)
                                 {
-                                    cmd.CommandText = "INSERT INTO tblSKU_ImageID (sku, image_id, updateddate) VALUES ('" + Convert.ToString(row["sku"]) + "', '" + Convert.ToString(row["image_id"]) + "', CURRENT_TIMESTAMP);";
+                                    cmd.CommandText = "INSERT INTO tblSKU_ImageID (SKU, Image_Id, UpdatedDate) VALUES ('" + Convert.ToString(row["SKU"]) + "', '" + Convert.ToString(row["Image_Id"]) + "', CURRENT_TIMESTAMP);";
                                     cmd.ExecuteNonQuery();
                                 }
                                 transaction.Commit();
@@ -194,13 +229,13 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "SELECT sku, englishname, chinesename, chinesedesc FROM tblSKU_Chinese WHERE sku = '" + txtSkuC.Text + "';";
+                            cmd.CommandText = "SELECT SKU, EnglishName, ChineseName, ChineseDesc FROM tblSKU_Chinese WHERE SKU = '" + txtSkuC.Text + "';";
                             objReader = cmd.ExecuteReader();
 
                             if (objReader.Read())
                             {
-                                txtChineseName.Text = Convert.ToString(objReader["chinesename"]);
-                                txtChineseDesc.Text = Convert.ToString(objReader["chinesedesc"]);
+                                txtChineseName.Text = Convert.ToString(objReader["ChineseName"]);
+                                txtChineseDesc.Text = Convert.ToString(objReader["ChineseDesc"]);
                             }
                         }
                         conn.Close();
@@ -230,7 +265,7 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "UPDATE tblSKU_Chinese SET chinesename = " + txtChineseName.Text + ", chinesedesc = " + txtChineseDesc.Text + ", updateddate = CURRENT_TIMESTAMP WHERE sku = '" + txtSkuC.Text + "';";
+                            cmd.CommandText = "UPDATE tblSKU_Chinese SET ChineseName = " + txtChineseName.Text + ", ChineseDesc = " + txtChineseDesc.Text + ", UpdatedDate = CURRENT_TIMESTAMP WHERE SKU = '" + txtSkuC.Text + "';";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -259,7 +294,7 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "INSERT INTO tblSKU_Chinese (sku, chinesename, chinesedesc, updateddate) VALUES ('" + txtNewSkuC.Text + "', '" + txtNewChineseName.Text + "', '" + txtNewChineseDesc.Text + "', CURRENT_TIMESTAMP);";
+                            cmd.CommandText = "INSERT INTO tblSKU_Chinese (SKU, ChineseName, ChineseDesc, Updateddate) VALUES ('" + txtNewSkuC.Text + "', '" + txtNewChineseName.Text + "', '" + txtNewChineseDesc.Text + "', CURRENT_TIMESTAMP);";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -297,7 +332,7 @@ namespace TranslationFileGen
                             {
                                 foreach (DataRow row in dt.Rows)
                                 {
-                                    cmd.CommandText = "INSERT INTO tblSKU_Chinese (sku, chinesename, chinesedesc, updateddate) VALUES ('" + Convert.ToString(row["sku"]) + "', '" + Convert.ToString(row["chinesename"]) + "', '" + Convert.ToString(row["chinesedesc"]) + "', CURRENT_TIMESTAMP);";
+                                    cmd.CommandText = "INSERT INTO tblSKU_Chinese (SKU, ChineseName, ChineseDesc, UpdatedDate) VALUES ('" + Convert.ToString(row["SKU"]) + "', '" + Convert.ToString(row["ChineseName"]) + "', '" + Convert.ToString(row["ChineseDesc"]) + "', CURRENT_TIMESTAMP);";
                                     cmd.ExecuteNonQuery();
                                 }
                                 transaction.Commit();
@@ -332,12 +367,12 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "SELECT englishname, chinesename, chinesedesc FROM tblMetadata WHERE englishname = '" + txtMetaData.Text + "';";
+                            cmd.CommandText = "SELECT EnglishName, ChineseName FROM tblMetadata WHERE EnglishName = '" + txtMetaData.Text + "';";
                             objReader = cmd.ExecuteReader();
 
                             if (objReader.Read())
                             {
-                                txtChineseTrans.Text = Convert.ToString(objReader["chinesename"]);
+                                txtChineseTrans.Text = Convert.ToString(objReader["ChineseName"]);
                             }
                         }
                         conn.Close();
@@ -355,7 +390,7 @@ namespace TranslationFileGen
             }
         }
 
-        protected void btnUpdateM_Click1(object sender, EventArgs e)
+        protected void btnUpdateM_Click(object sender, EventArgs e)
         {
             SQLiteCommand cmd = null;
             try
@@ -367,7 +402,7 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "UPDATE tblMetadata SET chinesename = " + txtChineseTrans.Text + " WHERE englishname = '" + txtMetaData.Text + "';";
+                            cmd.CommandText = "UPDATE tblMetadata SET ChineseName = " + txtChineseTrans.Text + " WHERE EnglishName = '" + txtMetaData.Text + "';";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -396,7 +431,7 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "INSERT INTO tblMetadata (englishname, chinesename) VALUES ('" + txtNewMetaData.Text + "', '" + txtNewChineseTrans.Text + "');";
+                            cmd.CommandText = "INSERT INTO tblMetadata (EnglishName, ChineseName) VALUES ('" + txtNewMetaData.Text + "', '" + txtNewChineseTrans.Text + "');";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -434,7 +469,7 @@ namespace TranslationFileGen
                             {
                                 foreach (DataRow row in dt.Rows)
                                 {
-                                    cmd.CommandText = "INSERT INTO tblMetadata (englishname, chinesename) VALUES ('" + Convert.ToString(row["englishname"]) + "', '" + Convert.ToString(row["chinesename"]) + "');";
+                                    cmd.CommandText = "INSERT INTO tblMetadata (EnglishName, ChineseName) VALUES ('" + Convert.ToString(row["EnglishName"]) + "', '" + Convert.ToString(row["ChineseName"]) + "');";
                                     cmd.ExecuteNonQuery();
                                 }
                                 transaction.Commit();
@@ -459,6 +494,7 @@ namespace TranslationFileGen
         protected void btnCategoryImport_Click(object sender, EventArgs e)
         {
             SQLiteCommand cmd = null;
+            string code, cat01 = string.Empty, cat02 = string.Empty, cat03 = string.Empty;
             try
             {
                 string filecontent = Convert.ToBase64String(uploadFileCategory.FileBytes);
@@ -477,7 +513,27 @@ namespace TranslationFileGen
                             {
                                 foreach (DataRow row in dt.Rows)
                                 {
-                                    cmd.CommandText = "INSERT INTO tblCategory_raw (category, code, level) VALUES ('" + Convert.ToString(row["category"]) + "', '" + Convert.ToString(row["code"]) + "', " + Convert.ToInt32(row["level"]) + ");";
+                                    code = Convert.ToString(row["Code"]);
+                                    cmd.CommandText = "INSERT INTO tblCategory_Raw (Category, Code, Level) VALUES ('" + Convert.ToString(row["Category"]) + "', '" + code + "', " + Convert.ToInt32(row["Level"]) + ");";
+                                    cmd.ExecuteNonQuery();
+
+                                    switch(code.Length)
+                                    {
+                                        case 6:
+                                            cat01 = code.Substring(0, 2);
+                                            cat02 = code.Substring(0, 4);
+                                            cat03 = code.Substring(0, 6);
+                                            break;
+                                        case 4:
+                                            cat01 = code.Substring(0, 2);
+                                            cat02 = code.Substring(0, 4);
+                                            break;
+                                        case 2:
+                                            cat01 = code.Substring(0, 2);
+                                            break;
+                                    }
+
+                                    cmd.CommandText = "INSERT INTO tblCategory (Cat01, Cat02, Cat03, CatDesc, Level) VALUES ('" + cat01 + "','" +  cat02 + "','" + cat03 + "','" + Convert.ToString(row["Category"]) + "', " + Convert.ToInt32(row["Level"]) + ");";
                                     cmd.ExecuteNonQuery();
                                 }
                                 transaction.Commit();

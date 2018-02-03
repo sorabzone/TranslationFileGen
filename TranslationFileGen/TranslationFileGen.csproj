@@ -149,6 +149,7 @@
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\signin.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
@@ -160,6 +161,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Login.aspx" />
+    <Content Include="Translate.aspx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="ManageTables.aspx" />
     <Content Include="Scripts\bootstrap.js" />
@@ -224,6 +227,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ManageTables.aspx.cs">
       <DependentUpon>ManageTables.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -252,6 +262,13 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Translate.aspx.cs">
+      <DependentUpon>Translate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Translate.aspx.designer.cs">
+      <DependentUpon>Translate.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

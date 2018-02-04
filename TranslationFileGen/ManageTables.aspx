@@ -2,7 +2,7 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="row">
-        <table width="80%" align="center">
+        <table width="90%" align="center">
             <tr>
                 <td>
                     <ul class="nav nav-tabs">

@@ -19,17 +19,13 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="3">
-                    <label>Import</label></td>
-            </tr>
-            <tr>
                 <td colspan="2">
                     <asp:FileUpload ID="uploadFile" runat="server" /></td>
                 <td></td>
             </tr>
             <tr>
                 <td colspan="3">
-                    <asp:Button Text="Import" ID="btnTranslate" runat="server" OnClick="btnTranslate_Click" class="btn btn-primary btn-block" />
+                    <asp:Button Text="Translate" ID="btnTranslate" runat="server" OnClick="btnTranslate_Click" class="btn btn-primary btn-block" />
                 </td>
             </tr>
             <tr>

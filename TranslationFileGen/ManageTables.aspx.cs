@@ -14,15 +14,18 @@ namespace TranslationFileGen
         protected void Page_Load(object sender, EventArgs e)
         {
             Msg.Text = "";
-            mvTables.ActiveViewIndex = 0;
-            Tab1.Enabled = false;
-            Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
-            Tab2.Enabled = true;
-            Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab3.Enabled = true;
-            Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab4.Enabled = true;
-            Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            if (!IsPostBack)
+            {
+                mvTables.ActiveViewIndex = 0;
+                Tab1.Enabled = false;
+                Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
+                Tab2.Enabled = true;
+                Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                Tab3.Enabled = true;
+                Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                Tab4.Enabled = true;
+                Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            }
         }
 
         #region Tab Change Events

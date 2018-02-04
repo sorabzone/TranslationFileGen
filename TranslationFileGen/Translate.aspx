@@ -25,7 +25,7 @@
             </tr>
             <tr>
                 <td colspan="3">
-                    <asp:Button Text="Translate" ID="btnTranslate" runat="server" OnClick="btnTranslate_Click" class="btn btn-primary btn-block" />
+                    <asp:Button Text="Generate File" ID="btnTranslate" runat="server" OnClick="btnTranslate_Click" class="btn btn-primary btn-block" />
                 </td>
             </tr>
             <tr>

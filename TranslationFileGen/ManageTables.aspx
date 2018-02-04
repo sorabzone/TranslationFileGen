@@ -23,15 +23,14 @@
             </tr>
             <tr>
                 <td>
-                    <div class="box-shadow">
+                    <div class="box-shadow bg-white">
+                        <br />
+                        <p style="margin-left:25px;">
+                            <asp:Label ID="Msg" ForeColor="red" runat="server" />
+                        </p>
                         <asp:MultiView ID="mvTables" runat="server" ActiveViewIndex="0">
                             <asp:View ID="vwImage" runat="server">
-                                <table width="90%" style="margin-left: 25px;margin-right: 25px;margin-bottom: 25px;" cellpadding="5px;">
-                                    <tr>
-                                        <td colspan="3">
-                                            <br />
-                                        </td>
-                                    </tr>
+                                <table width="90%" style="margin-left: 25px; margin-right: 25px; margin-bottom: 25px;" cellpadding="2px;">
                                     <tr>
                                         <td colspan="3">
                                             <span class="h2">
@@ -45,7 +44,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label>SKU</label></td>
+                                            <label class="text-muted">SKU</label></td>
                                         <td>
                                             <asp:TextBox ID="txtSku" runat="server" class="form-control" placeholder="SKU"></asp:TextBox></td>
                                         <td>
@@ -53,7 +52,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label>Image ID</label></td>
+                                            <label class="text-muted">Image ID</label></td>
                                         <td>
                                             <asp:TextBox ID="txtImage" runat="server" class="form-control" placeholder="Image Id"></asp:TextBox></td>
                                         <td></td>
@@ -111,12 +110,7 @@
                                 </table>
                             </asp:View>
                             <asp:View ID="vwChinese" runat="server">
-                                <table width="90%" style="margin-left: 25px;margin-right: 25px;margin-bottom: 25px;" cellpadding="5px;">
-                                    <tr>
-                                        <td colspan="3">
-                                            <br />
-                                        </td>
-                                    </tr>
+                                <table width="90%" style="margin-left: 25px; margin-right: 25px; margin-bottom: 25px;" cellpadding="2px;">
                                     <tr>
                                         <td colspan="3">
                                             <span class="h2">
@@ -130,7 +124,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label>SKU</label></td>
+                                            <label class="text-muted">SKU</label></td>
                                         <td>
                                             <asp:TextBox ID="txtSkuC" runat="server" class="form-control" placeholder="SKU"></asp:TextBox></td>
                                         <td>
@@ -138,14 +132,14 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label>Chinese Name</label></td>
+                                            <label class="text-muted">Chinese Name</label></td>
                                         <td>
                                             <asp:TextBox ID="txtChineseName" runat="server" class="form-control" placeholder="Chinese Name"></asp:TextBox></td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label>Chinese Description</label></td>
+                                            <label class="text-muted">Chinese Description</label></td>
                                         <td>
                                             <asp:TextBox ID="txtChineseDesc" runat="server" class="form-control" placeholder="Chinese Description"></asp:TextBox></td>
                                         <td></td>
@@ -211,12 +205,7 @@
                                 </table>
                             </asp:View>
                             <asp:View ID="vwMeta" runat="server">
-                                <table width="90%" style="margin-left: 25px;margin-right: 25px;margin-bottom: 25px;" cellpadding="5px;">
-                                    <tr>
-                                        <td colspan="3">
-                                            <br />
-                                        </td>
-                                    </tr>
+                                <table width="90%" style="margin-left: 25px; margin-right: 25px; margin-bottom: 25px;" cellpadding="2px;">
                                     <tr>
                                         <td colspan="3">
                                             <span class="h2">
@@ -230,7 +219,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label>New Meta Data</label></td>
+                                            <label class="text-muted">New Meta Data</label></td>
                                         <td>
                                             <asp:TextBox ID="txtMetaData" runat="server" class="form-control" placeholder="Meta Data"></asp:TextBox></td>
                                         <td>
@@ -238,7 +227,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label>
+                                            <label class="text-muted">
                                                 Chinese Translation</label></td>
                                         <td>
                                             <asp:TextBox ID="txtChineseTrans" runat="server" class="form-control" placeholder="Chinese Translation"></asp:TextBox></td>
@@ -295,12 +284,7 @@
                                 </table>
                             </asp:View>
                             <asp:View ID="vwCategory" runat="server">
-                                <table width="90%" style="margin-left: 25px;margin-right: 25px;margin-bottom: 25px;" cellpadding="5px;">
-                                    <tr>
-                                        <td colspan="3">
-                                            <br />
-                                        </td>
-                                    </tr>
+                                <table width="90%" style="margin-left: 25px; margin-right: 25px; margin-bottom: 25px;" cellpadding="2px;">
                                     <tr>
                                         <td colspan="3">
                                             <span class="h2">

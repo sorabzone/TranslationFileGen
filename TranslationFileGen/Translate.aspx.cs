@@ -235,6 +235,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please select valid excel file.";
             }
             catch (Exception ex)
             {
@@ -242,8 +244,11 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
-                objReader = null;
+                if (cmd != null)
+                    cmd.Dispose();
+
+                if (objReader != null)
+                    objReader = null;
             }
         }
     }

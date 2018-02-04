@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="Content/signin.css" />
     <link rel="stylesheet" href="Content/bootstrap.min.css" />
 </head>
-<body class="text-center">
+<body class="text-center bg-light">
     <form id="form1" runat="server" class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
         <table>

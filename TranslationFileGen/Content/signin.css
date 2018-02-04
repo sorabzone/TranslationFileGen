@@ -47,3 +47,7 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}

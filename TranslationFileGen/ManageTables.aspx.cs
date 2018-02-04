@@ -13,6 +13,7 @@ namespace TranslationFileGen
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            Msg.Text = "";
             mvTables.ActiveViewIndex = 0;
             Tab1.Enabled = false;
             Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
@@ -103,6 +104,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please enter SKU.";
             }
             catch (Exception ex)
             {
@@ -110,8 +113,11 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
-                objReader = null;
+                if(cmd != null)
+                    cmd.Dispose();
+
+                if(objReader != null)
+                    objReader = null;
             }
         }
 
@@ -133,6 +139,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please enter SKU and Image Id.";
             }
             catch (Exception ex)
             {
@@ -140,7 +148,8 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
+                if (cmd != null)
+                    cmd.Dispose();
             }
         }
 
@@ -162,6 +171,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please enter SKU and Image Id.";
             }
             catch (Exception ex)
             {
@@ -169,7 +180,8 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
+                if (cmd != null)
+                    cmd.Dispose();
             }
         }
 
@@ -203,6 +215,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please select valid excel file.";
             }
             catch (Exception ex)
             {
@@ -210,7 +224,8 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
+                if (cmd != null)
+                    cmd.Dispose();
             }
         }
         #endregion
@@ -241,6 +256,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please enter SKU.";
             }
             catch (Exception ex)
             {
@@ -248,8 +265,11 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
-                objReader = null;
+                if (cmd != null)
+                    cmd.Dispose();
+
+                if (objReader != null)
+                    objReader = null;
             }
         }
 
@@ -271,6 +291,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please enter SKU, Chinese Name and Chinese Description.";
             }
             catch (Exception ex)
             {
@@ -278,7 +300,8 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
+                if (cmd != null)
+                    cmd.Dispose();
             }
         }
 
@@ -300,6 +323,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please enter SKU, Chinese Name and Chinese Description.";
             }
             catch (Exception ex)
             {
@@ -307,7 +332,8 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
+                if (cmd != null)
+                    cmd.Dispose();
             }
         }
 
@@ -341,6 +367,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please select valid excel file.";
             }
             catch (Exception ex)
             {
@@ -348,7 +376,8 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
+                if (cmd != null)
+                    cmd.Dispose();
             }
         }
         #endregion
@@ -378,6 +407,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please enter Meta Data.";
             }
             catch (Exception ex)
             {
@@ -385,8 +416,11 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
-                objReader = null;
+                if (cmd != null)
+                    cmd.Dispose();
+
+                if (objReader != null)
+                    objReader = null;
             }
         }
 
@@ -408,6 +442,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please enter Meta Data and Chinese Name.";
             }
             catch (Exception ex)
             {
@@ -415,7 +451,8 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
+                if (cmd != null)
+                    cmd.Dispose();
             }
         }
 
@@ -437,6 +474,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please enter Meta Data and Chinese Name.";
             }
             catch (Exception ex)
             {
@@ -444,7 +483,8 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
+                if (cmd != null)
+                    cmd.Dispose();
             }
         }
 
@@ -478,6 +518,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please select valid excel file.";
             }
             catch (Exception ex)
             {
@@ -485,7 +527,8 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
+                if (cmd != null)
+                    cmd.Dispose();
             }
         }
         #endregion
@@ -542,6 +585,8 @@ namespace TranslationFileGen
                         conn.Close();
                     }
                 }
+                else
+                    Msg.Text = "Please select valid excel file.";
             }
             catch (Exception ex)
             {
@@ -549,7 +594,8 @@ namespace TranslationFileGen
             }
             finally
             {
-                cmd.Dispose();
+                if (cmd != null)
+                    cmd.Dispose();
             }
         }
         #endregion

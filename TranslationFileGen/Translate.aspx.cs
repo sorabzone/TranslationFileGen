@@ -10,7 +10,7 @@ namespace TranslationFileGen
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        public string connString = "Data Source=C:\\PS\\TranslationFileGen\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
+        public string connString = "Data Source=C:\\TFG\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -55,33 +55,35 @@ namespace TranslationFileGen
                                 {
                                     sSQL = new StringBuilder();
                                     sSQL.Append("INSERT INTO tblInventory (SKU, EnglishName, EnglishDescription, InStock, CategoryCode, Status, BrandName, ProductUrl) VALUES ( ");
-                                    sSQL.Append("'" + Convert.ToString(row["Product ID"]) + "', ");
-                                    sSQL.Append("'" + Convert.ToString(row["English Name"]) + "', ");
-                                    sSQL.Append("'" + Convert.ToString(row["English Description"]) + "', ");
-                                    sSQL.Append(Convert.ToString(row["In-Stock"]) + ", ");
-                                    sSQL.Append("'" + Convert.ToString(row["Category Code"]) + "', ");
-                                    sSQL.Append("'" + Convert.ToString(row["Status"]) + "', ");
-                                    sSQL.Append("'" + Convert.ToString(row["Brand Name"]) + "', ");
-                                    sSQL.Append("'" + Convert.ToString(row["Product URL"]) + "' ");
+                                    sSQL.Append("@SKU, @EnglishName, @EnglishDescription, @InStock, @CategoryCode, @Status, @BrandName, @ProductUrl");
                                     sSQL.Append("); ");
+
+                                    cmd.Parameters.AddWithValue("@SKU", Convert.ToString(row["Product ID"]));
+                                    cmd.Parameters.AddWithValue("@EnglishName", Convert.ToString(row["English Name"]));
+                                    cmd.Parameters.AddWithValue("@EnglishDescription", Convert.ToString(row["English Description"]));
+                                    cmd.Parameters.AddWithValue("@InStock", Convert.ToString(row["In-Stock"]));
+                                    cmd.Parameters.AddWithValue("@CategoryCode", Convert.ToString(row["Category Code"]));
+                                    cmd.Parameters.AddWithValue("@Status", Convert.ToString(row["Status"]));
+                                    cmd.Parameters.AddWithValue("@BrandName", Convert.ToString(row["Brand Name"]));
+                                    cmd.Parameters.AddWithValue("@ProductUrl", Convert.ToString(row["Product URL"]));
 
                                     cmd.CommandText = sSQL.ToString();
                                     cmd.ExecuteNonQuery();
                                 }
 
 
-
+                                cmd.Parameters.Clear();
                                 #region Create Translation Table
                                 sSQL = new StringBuilder();
                                 sSQL.Append("CREATE TEMPORARY TABLE tblTranslations (  \n");
-                                sSQL.Append("CategoryCode varchar(20) NOT NULL, CategoryEngNm TEXT NOT NULL, CategoryChineseNm TEXT  NOT NULL,  \n");
-                                sSQL.Append("SubCategoryCode varchar(20) NOT NULL,SubCategoryEngNm TEXT NOT NULL, SubCategoryChineseNm TEXT NOT NULL,  \n");
+                                sSQL.Append("CategoryCode varchar(20) NULL, CategoryEngNm TEXT NULL, CategoryChineseNm TEXT NULL,  \n");
+                                sSQL.Append("SubCategoryCode varchar(20) NULL,SubCategoryEngNm TEXT NULL, SubCategoryChineseNm TEXT NULL,  \n");
                                 sSQL.Append("SKU varchar(8) NOT NULL, \n");
-                                sSQL.Append("ProductEngNm TEXT NOT NULL, ProductChineseNm TEXT NOT NULL, ProductEngDesc TEXT NOT NULL,  \n");
-                                sSQL.Append("ProductChineseDesc TEXT NOT NULL, BrandEngNm TEXT NOT NULL, BrandChineseNm TEXT NOT NULL,  \n");
-                                sSQL.Append("SearchKeyWordNmEng TEXT NOT NULL, SearchKeyWordNmChinese TEXT NOT NULL, MetaTagEng TEXT NOT NULL,  \n");
-                                sSQL.Append("MetaTagChinese TEXT NOT NULL, ProductImageURL TEXT NOT NULL, ProductDetailURL TEXT NOT NULL,  \n");
-                                sSQL.Append("PaydImageId TEXT NOT NULL, ProductID TEXT NOT NULL, Language TEXT NOT NULL );  \n");
+                                sSQL.Append("ProductEngNm TEXT NULL, ProductChineseNm TEXT NULL, ProductEngDesc TEXT NULL,  \n");
+                                sSQL.Append("ProductChineseDesc TEXT NULL, BrandEngNm TEXT NULL, BrandChineseNm TEXT NULL,  \n");
+                                sSQL.Append("SearchKeyWordNmEng TEXT NULL, SearchKeyWordNmChinese TEXT NULL, MetaTagEng TEXT NULL,  \n");
+                                sSQL.Append("MetaTagChinese TEXT NULL, ProductImageURL TEXT NULL, ProductDetailURL TEXT NULL,  \n");
+                                sSQL.Append("PaydImageId TEXT NULL, ProductID TEXT NULL, Language TEXT NULL );  \n");
 
                                 cmd.CommandText = sSQL.ToString();
                                 cmd.ExecuteNonQuery();
@@ -101,50 +103,74 @@ namespace TranslationFileGen
 
                                 #region 3.	Filled Image Id and Image Link in Translation Table by SKU
                                 sSQL = new StringBuilder();
-                                sSQL.Append("UPDATE tblTranslations INNER JOIN tblSKU_ImageID ON tblTranslations.SKU = tblSKU_ImageID.SKU ");
-                                sSQL.Append("SET PaydImageId = Image_Id, ProductImageURL = CONCAT('http://bookstore.fll.cc/img/product/id=',Image_Id) ");
+                                sSQL.Append("UPDATE tblTranslations SET PaydImageId = (SELECT Image_Id FROM tblSKU_ImageID WHERE tblSKU_ImageID.SKU = tblTranslations.SKU)");
+                                cmd.CommandText = sSQL.ToString();
+                                cmd.ExecuteNonQuery();
 
+                                sSQL = new StringBuilder();
+                                sSQL.Append("UPDATE tblTranslations SET ProductImageURL = (SELECT 'http://bookstore.fll.cc/img/product/id=' || Image_Id FROM tblSKU_ImageID WHERE tblSKU_ImageID.SKU = tblTranslations.SKU)");
                                 cmd.CommandText = sSQL.ToString();
                                 cmd.ExecuteNonQuery();
                                 #endregion
 
                                 #region 4.	Filled items' Chinese Translations in Translation Table by SKU
                                 sSQL = new StringBuilder();
-                                sSQL.Append("UPDATE tblTranslations INNER JOIN tblSKU_Chinese ON tblTranslations.SKU = tblSKU_Chinese.SKU ");
-                                sSQL.Append("SET ProductChineseNm = ChineseName, ProductChineseDesc = ChineseDesc ");
+                                sSQL.Append("UPDATE tblTranslations SET ProductChineseNm = (SELECT ChineseName FROM tblSKU_Chinese WHERE tblSKU_Chinese.SKU = tblTranslations.SKU)");
+                                cmd.CommandText = sSQL.ToString();
+                                cmd.ExecuteNonQuery();
 
+                                sSQL = new StringBuilder();
+                                sSQL.Append("UPDATE tblTranslations SET ProductChineseDesc = (SELECT ChineseDesc FROM tblSKU_Chinese WHERE tblSKU_Chinese.SKU = tblTranslations.SKU)");
                                 cmd.CommandText = sSQL.ToString();
                                 cmd.ExecuteNonQuery();
                                 #endregion
 
                                 #region 5.	Filled Category Info in Translation Table by SKU and CategoryCode
+                                StringBuilder sSQL2 = new StringBuilder();
+                                sSQL2.Append("(SELECT SKU , Cat01, '' AS Cat02 FROM (SELECT SKU , CategoryCode, \n ");
+                                sSQL2.Append("CASE INSTR(CategoryCode,'|') WHEN 0 THEN CategoryCode ELSE SUBSTR(CategoryCode,1,INSTR(CategoryCode,'|')-1) END AS SubCategory FROM tblinventory) A \n ");
+                                sSQL2.Append("LEFT JOIN (SELECT * FROM tblCategory_Raw) B ON SubCategory = Code LEFT JOIN (SELECT distinct Cat00 , Cat01, Level FROM tblCategory) t1 ON Code = t1.Cat01 WHERE t1.Level = 1 \n ");
+
+                                sSQL2.Append("UNION \n ");
+
+                                sSQL2.Append("SELECT SKU , Cat01, Cat02 FROM (SELECT SKU , CategoryCode, \n ");
+                                sSQL2.Append("CASE INSTR(CategoryCode,'|') WHEN 0 THEN CategoryCode ELSE SUBSTR(CategoryCode,1,INSTR(CategoryCode,'|')-1) END AS SubCategory FROM tblinventory ) A \n ");
+                                sSQL2.Append("LEFT JOIN (SELECT * FROM tblCategory_Raw) B ON SubCategory = Code LEFT JOIN (SELECT distinct Cat00 , Cat01, Cat02, Level FROM tblCategory) t2 ON Code = t2.Cat02 WHERE t2.Level = 2 \n ");
+
+                                sSQL2.Append("UNION \n ");
+
+                                sSQL2.Append("SELECT SKU , Cat01, Cat02 FROM (SELECT SKU , CategoryCode, \n ");
+                                sSQL2.Append("CASE INSTR(CategoryCode,'|') WHEN 0 THEN CategoryCode ELSE SUBSTR(CategoryCode,1,INSTR(CategoryCode,'|')-1) END AS SubCategory FROM tblinventory ) A \n ");
+                                sSQL2.Append("LEFT JOIN (SELECT * FROM tblCategory_Raw) B ON SubCategory = Code LEFT JOIN tblCategory ON Code = Cat03 WHERE tblCategory.Level = 3 \n ");
+                                sSQL2.Append(") T3 \n");
+
                                 sSQL = new StringBuilder();
-                                sSQL.Append("UPDATE	tblTranslations T \n ");
-                                sSQL.Append("INNER JOIN ( \n ");
-                                sSQL.Append("SELECT SKU , Cat01, '' AS Cat02 FROM (SELECT SKU , CategoryCode, \n ");
-                                sSQL.Append("CASE position(' | ' IN CategoryCode) WHEN 0 THEN CategoryCode ELSE SUBSTR(CategoryCode,1,position(' | ' IN CategoryCode)-1) END AS SubCategory FROM tblinventory) A \n ");
-                                sSQL.Append("LEFT JOIN (SELECT * FROM tblCategory_Raw) B ON SubCategory = Code LEFT JOIN (SELECT distinct Cat00 , Cat01 FROM translation.tblCategory) t1 ON Code = Cat01 WHERE Level = 1 \n ");
+                                sSQL.Append("UPDATE	tblTranslations SET CategoryCode = (SELECT T3.Cat01 FROM " + sSQL2.ToString() + " WHERE T3.SKU = tblTranslations.SKU);");
+                                cmd.CommandText = sSQL.ToString();
+                                cmd.ExecuteNonQuery();
 
-                                sSQL.Append("UNION \n ");
+                                sSQL = new StringBuilder();
+                                sSQL.Append("UPDATE	tblTranslations SET SubCategoryCode = (SELECT T3.Cat02 FROM " + sSQL2.ToString() + " WHERE T3.SKU = tblTranslations.SKU);");
+                                cmd.CommandText = sSQL.ToString();
+                                cmd.ExecuteNonQuery();
 
-                                sSQL.Append("\n ");
-                                sSQL.Append("SELECT SKU , Cat01, Cat02 FROM (SELECT SKU , CategoryCode, \n ");
-                                sSQL.Append("CASE position(' | ' IN CategoryCode) WHEN 0 THEN CategoryCode ELSE SUBSTR(CategoryCode,1,position(' | ' IN CategoryCode)-1) END AS SubCategory FROM tblinventory ) A \n ");
-                                sSQL.Append("LEFT JOIN (SELECT * FROM tblCategory_Raw) B ON SubCategory = Code LEFT JOIN (SELECT distinct Cat00 , Cat01 , Cat02 FROM translation.tblCategory) t2 ON Code = Cat02 WHERE Level = 2 \n ");
+                                sSQL = new StringBuilder();
+                                sSQL.Append("UPDATE tblTranslations SET CategoryEngNm = (SELECT Category FROM tblCategory_Raw WHERE tblCategory_Raw.Code = tblTranslations.CategoryCode);");
+                                cmd.CommandText = sSQL.ToString();
+                                cmd.ExecuteNonQuery();
 
-                                sSQL.Append("UNION \n ");
+                                sSQL = new StringBuilder();
+                                sSQL.Append("UPDATE tblTranslations SET CategoryChineseNm = (SELECT ChineseName FROM tblMetadata WHERE tblMetadata.EnglishName = tblTranslations.CategoryEngNm);");
+                                cmd.CommandText = sSQL.ToString();
+                                cmd.ExecuteNonQuery();
 
-                                sSQL.Append("SELECT SKU , Cat01, Cat02 FROM (SELECT SKU , CategoryCode, \n ");
-                                sSQL.Append("CASE position(' | ' IN CategoryCode) WHEN 0 THEN CategoryCode ELSE SUBSTR(CategoryCode,1,position(' | ' IN CategoryCode)-1) END AS SubCategory FROM tblinventory ) A \n ");
-                                sSQL.Append("LEFT JOIN (SELECT * FROM tblCategory_Raw) B ON SubCategory = Code LEFT JOIN tblCategory ON Code = Cat03 WHERE Level = 3 \n ");
-                                sSQL.Append(") T3 on T.SKU = T3.SKU \n ");
-                                sSQL.Append("SET CatagoryCd = T3.Cat01, SubCatagoryCd = T3.Cat02; \n ");
+                                sSQL = new StringBuilder();
+                                sSQL.Append("UPDATE tblTranslations SET SubCategoryEngNm = (SELECT Category FROM tblCategory_raw WHERE tblCategory_raw.Code = tblTranslations.SubCategoryCode);");
+                                cmd.CommandText = sSQL.ToString();
+                                cmd.ExecuteNonQuery();
 
-                                sSQL.Append("UPDATE tblTranslations INNER JOIN tblCategory_Raw on CatagoryCd = Code set CategoryEngNm = Category; \n ");
-                                sSQL.Append("UPDATE tblTranslations INNER JOIN tblMetadata on CategoryEngNm = EnglishName set CategoryChineseNm = ChineseName; \n ");
-                                sSQL.Append("UPDATE tblTranslations INNER JOIN tblCategory_raw on SubCatagoryCode = Code set SubCategoryEngNm = Category; \n ");
-                                sSQL.Append("UPDATE tblTranslations INNER JOIN tblMetadata on SubCategoryEngNm = EnglishName set SubCategoryChineseNm = ChineseName; \n ");
-
+                                sSQL = new StringBuilder();
+                                sSQL.Append("UPDATE tblTranslations SET SubCategoryChineseNm = (SELECT ChineseName FROM tblMetadata WHERE tblMetadata.EnglishName = tblTranslations.SubCategoryEngNm);");
                                 cmd.CommandText = sSQL.ToString();
                                 cmd.ExecuteNonQuery();
                                 #endregion
@@ -164,69 +190,103 @@ namespace TranslationFileGen
                                 DataTable dts = new DataTable();
                                 dts.Load(objReader); // <-- FormatException
 
-                                while (objReader.Read())
+                                ExcelPackage excelExport = new ExcelPackage();
+                                var workSheet = excelExport.Workbook.Worksheets.Add("Transation");
+                                workSheet.TabColor = System.Drawing.Color.Black;
+                                workSheet.DefaultRowHeight = 12;
+                                //Header of table  
+                                workSheet.Row(1).Height = 20;
+                                workSheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                                workSheet.Row(1).Style.Font.Bold = true;
+                                workSheet.Cells[1, 1].Value = dts.Columns[0].ColumnName;
+                                workSheet.Cells[1, 2].Value = dts.Columns[1].ColumnName;
+                                workSheet.Cells[1, 3].Value = dts.Columns[2].ColumnName;
+                                workSheet.Cells[1, 4].Value = dts.Columns[3].ColumnName;
+                                workSheet.Cells[1, 5].Value = dts.Columns[4].ColumnName;
+                                workSheet.Cells[1, 6].Value = dts.Columns[5].ColumnName;
+                                workSheet.Cells[1, 7].Value = dts.Columns[6].ColumnName;
+                                workSheet.Cells[1, 8].Value = dts.Columns[7].ColumnName;
+                                workSheet.Cells[1, 9].Value = dts.Columns[8].ColumnName;
+                                workSheet.Cells[1, 10].Value = dts.Columns[9].ColumnName;
+                                workSheet.Cells[1, 11].Value = dts.Columns[10].ColumnName;
+                                workSheet.Cells[1, 12].Value = dts.Columns[11].ColumnName;
+                                workSheet.Cells[1, 13].Value = dts.Columns[12].ColumnName;
+                                workSheet.Cells[1, 14].Value = dts.Columns[13].ColumnName;
+                                workSheet.Cells[1, 15].Value = dts.Columns[14].ColumnName;
+                                workSheet.Cells[1, 16].Value = dts.Columns[15].ColumnName;
+                                workSheet.Cells[1, 17].Value = dts.Columns[16].ColumnName;
+                                workSheet.Cells[1, 18].Value = dts.Columns[17].ColumnName;
+                                workSheet.Cells[1, 19].Value = dts.Columns[18].ColumnName;
+                                workSheet.Cells[1, 20].Value = dts.Columns[19].ColumnName;
+                                workSheet.Cells[1, 21].Value = dts.Columns[20].ColumnName;
+                                workSheet.Cells[1, 22].Value = dts.Columns[21].ColumnName;
+
+                                //Body of table  
+                                int recordIndex = 2;
+                                foreach (DataRow record in dts.Rows)
                                 {
-                                    var students = new[]
-                                    {
-                                        new {
-                                            Id = "101", Name = "Vivek", Address = "Hyderabad"
-                                        },
-                                        new {
-                                            Id = "102", Name = "Ranjeet", Address = "Hyderabad"
-                                        },
-                                        new {
-                                            Id = "103", Name = "Sharath", Address = "Hyderabad"
-                                        },
-                                        new {
-                                            Id = "104", Name = "Ganesh", Address = "Hyderabad"
-                                        },
-                                        new {
-                                            Id = "105", Name = "Gajanan", Address = "Hyderabad"
-                                        },
-                                        new {
-                                            Id = "106", Name = "Ashish", Address = "Hyderabad"
-                                        }
-                                    };
-                                    ExcelPackage excelExport = new ExcelPackage();
-                                    var workSheet = excelExport.Workbook.Worksheets.Add("Sheet1");
-                                    workSheet.TabColor = System.Drawing.Color.Black;
-                                    workSheet.DefaultRowHeight = 12;
-                                    //Header of table  
-                                    //  
-                                    workSheet.Row(1).Height = 20;
-                                    workSheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                                    workSheet.Row(1).Style.Font.Bold = true;
-                                    workSheet.Cells[1, 1].Value = "S.No";
-                                    workSheet.Cells[1, 2].Value = "Id";
-                                    workSheet.Cells[1, 3].Value = "Name";
-                                    workSheet.Cells[1, 4].Value = "Address";
-                                    
-                                    //Body of table  
-                                    //  
-                                    int recordIndex = 2;
-                                    foreach (var student in students)
-                                    {
-                                        workSheet.Cells[recordIndex, 1].Value = (recordIndex - 1).ToString();
-                                        workSheet.Cells[recordIndex, 2].Value = student.Id;
-                                        workSheet.Cells[recordIndex, 3].Value = student.Name;
-                                        workSheet.Cells[recordIndex, 4].Value = student.Address;
-                                        recordIndex++;
-                                    }
-                                    workSheet.Column(1).AutoFit();
-                                    workSheet.Column(2).AutoFit();
-                                    workSheet.Column(3).AutoFit();
-                                    workSheet.Column(4).AutoFit();
-                                    string excelName = "studentsRecord";
-                                    using (var memoryStream = new MemoryStream())
-                                    {
-                                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                                        Response.AddHeader("content-disposition", "attachment; filename=" + excelName + ".xlsx");
-                                        excelExport.SaveAs(memoryStream);
-                                        memoryStream.WriteTo(Response.OutputStream);
-                                        Response.Flush();
-                                        Response.End();
-                                    }
+                                    workSheet.Cells[recordIndex, 1].Value = Convert.ToString(record[0]);
+                                    workSheet.Cells[recordIndex, 2].Value = Convert.ToString(record[1]);
+                                    workSheet.Cells[recordIndex, 3].Value = Convert.ToString(record[2]);
+                                    workSheet.Cells[recordIndex, 4].Value = Convert.ToString(record[3]);
+                                    workSheet.Cells[recordIndex, 5].Value = Convert.ToString(record[4]);
+
+                                    workSheet.Cells[recordIndex, 6].Value = Convert.ToString(record[5]);
+                                    workSheet.Cells[recordIndex, 7].Value = Convert.ToString(record[6]);
+                                    workSheet.Cells[recordIndex, 8].Value = Convert.ToString(record[7]);
+                                    workSheet.Cells[recordIndex, 9].Value = Convert.ToString(record[8]);
+                                    workSheet.Cells[recordIndex, 10].Value = Convert.ToString(record[9]);
+
+                                    workSheet.Cells[recordIndex, 11].Value = Convert.ToString(record[10]);
+                                    workSheet.Cells[recordIndex, 12].Value = Convert.ToString(record[11]);
+                                    workSheet.Cells[recordIndex, 13].Value = Convert.ToString(record[12]);
+                                    workSheet.Cells[recordIndex, 14].Value = Convert.ToString(record[13]);
+                                    workSheet.Cells[recordIndex, 15].Value = Convert.ToString(record[14]);
+
+                                    workSheet.Cells[recordIndex, 16].Value = Convert.ToString(record[15]);
+                                    workSheet.Cells[recordIndex, 17].Value = Convert.ToString(record[16]);
+                                    workSheet.Cells[recordIndex, 18].Value = Convert.ToString(record[17]);
+                                    workSheet.Cells[recordIndex, 19].Value = Convert.ToString(record[18]);
+                                    workSheet.Cells[recordIndex, 20].Value = Convert.ToString(record[19]);
+
+                                    workSheet.Cells[recordIndex, 21].Value = Convert.ToString(record[20]);
+                                    workSheet.Cells[recordIndex, 22].Value = Convert.ToString(record[21]);
+                                    recordIndex++;
                                 }
+                                workSheet.Column(1).AutoFit();
+                                workSheet.Column(2).AutoFit();
+                                workSheet.Column(3).AutoFit();
+                                workSheet.Column(4).AutoFit();
+                                workSheet.Column(5).AutoFit();
+                                workSheet.Column(6).AutoFit();
+                                workSheet.Column(7).AutoFit();
+                                workSheet.Column(8).AutoFit();
+                                workSheet.Column(9).AutoFit();
+                                workSheet.Column(10).AutoFit();
+                                workSheet.Column(11).AutoFit();
+                                workSheet.Column(12).AutoFit();
+                                workSheet.Column(13).AutoFit();
+                                workSheet.Column(14).AutoFit();
+                                workSheet.Column(15).AutoFit();
+                                workSheet.Column(16).AutoFit();
+                                workSheet.Column(17).AutoFit();
+                                workSheet.Column(18).AutoFit();
+                                workSheet.Column(19).AutoFit();
+                                workSheet.Column(20).AutoFit();
+                                workSheet.Column(21).AutoFit();
+                                workSheet.Column(22).AutoFit();
+
+                                string excelName = "Translation";
+                                using (var memoryStream = new MemoryStream())
+                                {
+                                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                                    Response.AddHeader("content-disposition", "attachment; filename=" + excelName + ".xlsx");
+                                    excelExport.SaveAs(memoryStream);
+                                    memoryStream.WriteTo(Response.OutputStream);
+                                    Response.Flush();
+                                    Response.End();
+                                }
+
                                 #endregion
 
                                 transaction.Commit();

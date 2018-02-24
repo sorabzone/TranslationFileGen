@@ -1,6 +1,17 @@
 ﻿<%@ Page Title="Manage Tables" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="ManageTables.aspx.cs" Inherits="TranslationFileGen.ManageTables" %>
 
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">\
+    <script>
+        function PleaseConfirm() {
+            var r = confirm("Do you want to append or replace all existing records ? Please click Ok to replace all.");
+            if (r == true) {
+                document.getElementById('MainContent_hdnReplace').value = '1';
+            } else {
+                document.getElementById('MainContent_hdnReplace').value = '0';
+            }
+            return true;
+        }
+    </script>
     <div class="row">
         <table width="90%" align="center">
             <tr>
@@ -19,6 +30,7 @@
                             <asp:LinkButton Text="Category" BorderStyle="None" ID="Tab4" CssClass="Initial" runat="server"
                                 OnClick="Tab4_Click" /></li>
                     </ul>
+                    <asp:HiddenField ID="hdnReplace" Value="0" runat="server" />
                 </td>
             </tr>
             <tr>
@@ -26,7 +38,10 @@
                     <div class="box-shadow bg-white">
                         <br />
                         <p style="margin-left:25px;">
-                            <asp:Label ID="Msg" ForeColor="red" runat="server" />
+                            <asp:Label ID="Msg" ForeColor="Red" runat="server" />
+                        </p>
+                        <p style="margin-left:25px;">
+                            <asp:Label ID="successMsg" ForeColor="Green" runat="server" />
                         </p>
                         <asp:MultiView ID="mvTables" runat="server" ActiveViewIndex="0">
                             <asp:View ID="vwImage" runat="server">
@@ -99,7 +114,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <asp:Button Text="Import" ID="btnImageImport" runat="server" OnClick="btnImageImport_Click" class="btn btn-primary btn-block" />
+                                            <asp:Button Text="Import" ID="btnImageImport" runat="server" OnClientClick="return PleaseConfirm();" OnClick="btnImageImport_Click" class="btn btn-primary btn-block" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -194,7 +209,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <asp:Button Text="Import" ID="btnChineseImport" runat="server" OnClick="btnChineseImport_Click" class="btn btn-primary btn-block" />
+                                            <asp:Button Text="Import" ID="btnChineseImport" runat="server"  OnClientClick="return PleaseConfirm();" OnClick="btnChineseImport_Click" class="btn btn-primary btn-block" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -274,7 +289,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <asp:Button Text="Import" ID="btnMetaDataImport" runat="server" OnClick="btnMetaDataImport_Click" class="btn btn-primary btn-block" /></td>
+                                            <asp:Button Text="Import" ID="btnMetaDataImport" runat="server"  OnClientClick="return PleaseConfirm();" OnClick="btnMetaDataImport_Click" class="btn btn-primary btn-block" /></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">
@@ -307,7 +322,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <asp:Button Text="Import" ID="btnCategoryImport" runat="server" OnClick="btnCategoryImport_Click" class="btn btn-primary btn-block" /></td>
+                                            <asp:Button Text="Import" ID="btnCategoryImport" runat="server" OnClientClick="return PleaseConfirm();" OnClick="btnCategoryImport_Click" class="btn btn-primary btn-block" /></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">

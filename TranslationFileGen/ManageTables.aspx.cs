@@ -9,11 +9,12 @@ namespace TranslationFileGen
 {
     public partial class ManageTables : System.Web.UI.Page
     {
-        public string connString = "Data Source=C:\\PS\\TranslationFileGen\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
+        public string connString = "Data Source=C:\\TFG\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
             Msg.Text = "";
+            successMsg.Text = "";
             if (!IsPostBack)
             {
                 mvTables.ActiveViewIndex = 0;
@@ -207,9 +208,21 @@ namespace TranslationFileGen
                         {
                             using (var transaction = conn.BeginTransaction())
                             {
+                                if(hdnReplace.Value.Equals("1"))
+                                {
+                                    cmd.CommandText = "DELETE FROM tblSKU_ImageID;";
+                                    cmd.ExecuteNonQuery();
+                                }
+
                                 foreach (DataRow row in dt.Rows)
                                 {
-                                    cmd.CommandText = "INSERT INTO tblSKU_ImageID (SKU, Image_Id, UpdatedDate) VALUES ('" + Convert.ToString(row["SKU"]) + "', '" + Convert.ToString(row["Image_Id"]) + "', CURRENT_TIMESTAMP);";
+                                    DateTime oDate = DateTime.ParseExact(Convert.ToString(row["updateddate"]), "M/d/yyyy", null);
+
+                                    cmd.Parameters.AddWithValue("@SKU", Convert.ToString(row["SKU"]));
+                                    cmd.Parameters.AddWithValue("@Image_Id", Convert.ToString(row["Image_Id"]));
+                                    cmd.Parameters.AddWithValue("@Date", oDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                                    
+                                    cmd.CommandText = "INSERT INTO tblSKU_ImageID (SKU, Image_Id, UpdatedDate) SELECT @SKU, @Image_Id, @Date \n WHERE NOT EXISTS (SELECT 1 FROM tblSKU_ImageID WHERE SKU = @SKU);";
                                     cmd.ExecuteNonQuery();
                                 }
                                 transaction.Commit();
@@ -217,6 +230,7 @@ namespace TranslationFileGen
                         }
                         conn.Close();
                     }
+                    successMsg.Text = "Records imported successfully";
                 }
                 else
                     Msg.Text = "Please select valid excel file.";
@@ -227,6 +241,7 @@ namespace TranslationFileGen
             }
             finally
             {
+                hdnReplace.Value = "0";
                 if (cmd != null)
                     cmd.Dispose();
             }
@@ -343,10 +358,11 @@ namespace TranslationFileGen
         protected void btnChineseImport_Click(object sender, EventArgs e)
         {
             SQLiteCommand cmd = null;
+            
             try
             {
                 string filecontent = Convert.ToBase64String(uploadFileChinese.FileBytes);
-
+                
                 if (Path.GetExtension(uploadFileChinese.FileName).Equals(".xlsx"))
                 {
                     var excel = new ExcelPackage(uploadFileChinese.FileContent);
@@ -359,9 +375,19 @@ namespace TranslationFileGen
                         {
                             using (var transaction = conn.BeginTransaction())
                             {
+                                if (hdnReplace.Value.Equals("1"))
+                                {
+                                    cmd.CommandText = "DELETE FROM tblSKU_Chinese;";
+                                    cmd.ExecuteNonQuery();
+                                }
+
                                 foreach (DataRow row in dt.Rows)
                                 {
-                                    cmd.CommandText = "INSERT INTO tblSKU_Chinese (SKU, ChineseName, ChineseDesc, UpdatedDate) VALUES ('" + Convert.ToString(row["SKU"]) + "', '" + Convert.ToString(row["ChineseName"]) + "', '" + Convert.ToString(row["ChineseDesc"]) + "', CURRENT_TIMESTAMP);";
+                                    cmd.Parameters.AddWithValue("@ProductSKU", Convert.ToString(row["ProductSKU"]));
+                                    cmd.Parameters.AddWithValue("@EnglishName", Convert.ToString(row["EnglishName"]));
+                                    cmd.Parameters.AddWithValue("@ChineseName", Convert.ToString(row["ChineseName"]));
+                                    cmd.Parameters.AddWithValue("@ChineseLongName", Convert.ToString(row["ChineseLongName"]));
+                                    cmd.CommandText = "INSERT INTO tblSKU_Chinese (SKU, EnglishName, ChineseName, ChineseDesc, UpdatedDate) SELECT @ProductSKU, @EnglishName, @ChineseName, @ChineseLongName, CURRENT_TIMESTAMP \n WHERE NOT EXISTS (SELECT 1 FROM tblSKU_Chinese WHERE SKU = @ProductSKU AND EnglishName = @EnglishName);";
                                     cmd.ExecuteNonQuery();
                                 }
                                 transaction.Commit();
@@ -369,6 +395,7 @@ namespace TranslationFileGen
                         }
                         conn.Close();
                     }
+                    successMsg.Text = "Records imported successfully";
                 }
                 else
                     Msg.Text = "Please select valid excel file.";
@@ -379,6 +406,7 @@ namespace TranslationFileGen
             }
             finally
             {
+                hdnReplace.Value = "0";
                 if (cmd != null)
                     cmd.Dispose();
             }
@@ -494,6 +522,7 @@ namespace TranslationFileGen
         protected void btnMetaDataImport_Click(object sender, EventArgs e)
         {
             SQLiteCommand cmd = null;
+            string abc = "";
             try
             {
                 string filecontent = Convert.ToBase64String(uploadFileMetaData.FileBytes);
@@ -510,9 +539,18 @@ namespace TranslationFileGen
                         {
                             using (var transaction = conn.BeginTransaction())
                             {
+                                if (hdnReplace.Value.Equals("1"))
+                                {
+                                    cmd.CommandText = "DELETE FROM tblMetadata;";
+                                    cmd.ExecuteNonQuery();
+                                }
+
                                 foreach (DataRow row in dt.Rows)
                                 {
-                                    cmd.CommandText = "INSERT INTO tblMetadata (EnglishName, ChineseName) VALUES ('" + Convert.ToString(row["EnglishName"]) + "', '" + Convert.ToString(row["ChineseName"]) + "');";
+                                    cmd.Parameters.AddWithValue("@EnglishName", Convert.ToString(row["EnglishName"]));
+                                    cmd.Parameters.AddWithValue("@ChineseName", Convert.ToString(row["ChineseName"]));
+                                    cmd.CommandText = "INSERT INTO tblMetadata (EnglishName, ChineseName) SELECT @EnglishName, @ChineseName \n WHERE NOT EXISTS (SELECT 1 FROM tblMetadata WHERE EnglishName = @EnglishName);";
+                                    abc = Convert.ToString(row["EnglishName"]);
                                     cmd.ExecuteNonQuery();
                                 }
                                 transaction.Commit();
@@ -520,6 +558,7 @@ namespace TranslationFileGen
                         }
                         conn.Close();
                     }
+                    successMsg.Text = "Records imported successfully";
                 }
                 else
                     Msg.Text = "Please select valid excel file.";
@@ -530,6 +569,7 @@ namespace TranslationFileGen
             }
             finally
             {
+                hdnReplace.Value = "0";
                 if (cmd != null)
                     cmd.Dispose();
             }
@@ -557,10 +597,19 @@ namespace TranslationFileGen
                         {
                             using (var transaction = conn.BeginTransaction())
                             {
+                                if (hdnReplace.Value.Equals("1"))
+                                {
+                                    cmd.CommandText = "DELETE FROM tblCategory_Raw; DELETE FROM tblCategory;";
+                                    cmd.ExecuteNonQuery();
+                                }
+
                                 foreach (DataRow row in dt.Rows)
                                 {
                                     code = Convert.ToString(row["Code"]);
-                                    cmd.CommandText = "INSERT INTO tblCategory_Raw (Category, Code, Level) VALUES ('" + Convert.ToString(row["Category"]) + "', '" + code + "', " + Convert.ToInt32(row["Level"]) + ");";
+                                    cmd.Parameters.AddWithValue("@Code", code);
+                                    cmd.Parameters.AddWithValue("@Category", Convert.ToString(row["Category"]));
+                                    cmd.Parameters.AddWithValue("@Level", string.IsNullOrEmpty(Convert.ToString(row["Level"])) ? 0 : Convert.ToInt32(row["Level"]));
+                                    cmd.CommandText = "INSERT INTO tblCategory_Raw (Category, Code, Level) SELECT @Category, @Code, @Level \n WHERE NOT EXISTS (SELECT 1 FROM tblCategory_Raw WHERE Code = @Code);";
                                     cmd.ExecuteNonQuery();
 
                                     switch(code.Length)
@@ -577,9 +626,15 @@ namespace TranslationFileGen
                                         case 2:
                                             cat01 = code.Substring(0, 2);
                                             break;
-                                    }
+                                    }   
 
-                                    cmd.CommandText = "INSERT INTO tblCategory (Cat01, Cat02, Cat03, CatDesc, Level) VALUES ('" + cat01 + "','" +  cat02 + "','" + cat03 + "','" + Convert.ToString(row["Category"]) + "', " + Convert.ToInt32(row["Level"]) + ");";
+                                    cmd.Parameters.Clear();
+                                    cmd.Parameters.AddWithValue("@cat01", cat01);
+                                    cmd.Parameters.AddWithValue("@cat02", cat02);
+                                    cmd.Parameters.AddWithValue("@cat03", cat03);
+                                    cmd.Parameters.AddWithValue("@Category", Convert.ToString(row["Category"]));
+                                    cmd.Parameters.AddWithValue("@Level", string.IsNullOrEmpty(Convert.ToString(row["Level"])) ? 0 : Convert.ToInt32(row["Level"]));
+                                    cmd.CommandText = "INSERT INTO tblCategory (Cat01, Cat02, Cat03, CatDesc, Level) SELECT @cat01, @cat02, @cat03, @Category, @Level \n WHERE NOT EXISTS (SELECT 1 FROM tblCategory WHERE Cat01 = @cat01 AND Cat02 = @cat02 AND Cat03 = @cat03);";
                                     cmd.ExecuteNonQuery();
                                 }
                                 transaction.Commit();
@@ -587,6 +642,7 @@ namespace TranslationFileGen
                         }
                         conn.Close();
                     }
+                    successMsg.Text = "Records imported successfully";
                 }
                 else
                     Msg.Text = "Please select valid excel file.";
@@ -597,6 +653,7 @@ namespace TranslationFileGen
             }
             finally
             {
+                hdnReplace.Value = "0";
                 if (cmd != null)
                     cmd.Dispose();
             }

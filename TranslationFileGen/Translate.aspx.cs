@@ -10,7 +10,7 @@ namespace TranslationFileGen
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        public string connString = "Data Source=C:\\TFG\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
+        public string connString = "Data Source=C:\\Learn\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -177,11 +177,11 @@ namespace TranslationFileGen
 
                                 #region 6.	Producing final output file: Exporting the Translation table to an Excel File
                                 sSQL = new StringBuilder();
-                                sSQL.Append("SELECT CategoryCode,CategoryEngNm,CategoryChineseNm,SubCategoryCode,SubCategoryEngNm \n ");
-                                sSQL.Append(",SubCategoryChineseNm,SKU,ProductEngNm,ProductChineseNm,ProductEngDesc \n ");
-                                sSQL.Append(",ProductChineseDesc,BrandEngNm,BrandChineseNm,SearchKeyWordNmEng \n ");
-                                sSQL.Append(",SearchKeyWordNmChinese,MetaTagEng,MetaTagChinese,ProductImageURL \n ");
-                                sSQL.Append(",ProductDetailURL,PaydImageId,ProductID,Language FROM tblTranslations; \n ");
+                                sSQL.Append("SELECT IFNULL(CategoryCode,''),IFNULL(CategoryEngNm,''),IFNULL(CategoryChineseNm,''),IFNULL(SubCategoryCode,''),IFNULL(SubCategoryEngNm,'') \n ");
+                                sSQL.Append(",IFNULL(SubCategoryChineseNm,''),IFNULL(SKU,''),IFNULL(ProductEngNm,''),IFNULL(ProductChineseNm,''),IFNULL(ProductEngDesc,'') \n ");
+                                sSQL.Append(",IFNULL(ProductChineseDesc,''),IFNULL(BrandEngNm,''),IFNULL(BrandChineseNm,''),IFNULL(SearchKeyWordNmEng,'') \n ");
+                                sSQL.Append(",IFNULL(SearchKeyWordNmChinese,''),IFNULL(MetaTagEng,''),IFNULL(MetaTagChinese,''),IFNULL(ProductImageURL,'') \n ");
+                                sSQL.Append(",IFNULL(ProductDetailURL,''),IFNULL(PaydImageId,''),IFNULL(ProductID,''),IFNULL(Language,'') FROM tblTranslations; \n ");
 
                                 cmd.CommandText = sSQL.ToString();
                                 objReader = cmd.ExecuteReader();
@@ -198,28 +198,28 @@ namespace TranslationFileGen
                                 workSheet.Row(1).Height = 20;
                                 workSheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                                 workSheet.Row(1).Style.Font.Bold = true;
-                                workSheet.Cells[1, 1].Value = dts.Columns[0].ColumnName;
-                                workSheet.Cells[1, 2].Value = dts.Columns[1].ColumnName;
-                                workSheet.Cells[1, 3].Value = dts.Columns[2].ColumnName;
-                                workSheet.Cells[1, 4].Value = dts.Columns[3].ColumnName;
-                                workSheet.Cells[1, 5].Value = dts.Columns[4].ColumnName;
-                                workSheet.Cells[1, 6].Value = dts.Columns[5].ColumnName;
-                                workSheet.Cells[1, 7].Value = dts.Columns[6].ColumnName;
-                                workSheet.Cells[1, 8].Value = dts.Columns[7].ColumnName;
-                                workSheet.Cells[1, 9].Value = dts.Columns[8].ColumnName;
-                                workSheet.Cells[1, 10].Value = dts.Columns[9].ColumnName;
-                                workSheet.Cells[1, 11].Value = dts.Columns[10].ColumnName;
-                                workSheet.Cells[1, 12].Value = dts.Columns[11].ColumnName;
-                                workSheet.Cells[1, 13].Value = dts.Columns[12].ColumnName;
-                                workSheet.Cells[1, 14].Value = dts.Columns[13].ColumnName;
-                                workSheet.Cells[1, 15].Value = dts.Columns[14].ColumnName;
-                                workSheet.Cells[1, 16].Value = dts.Columns[15].ColumnName;
-                                workSheet.Cells[1, 17].Value = dts.Columns[16].ColumnName;
-                                workSheet.Cells[1, 18].Value = dts.Columns[17].ColumnName;
-                                workSheet.Cells[1, 19].Value = dts.Columns[18].ColumnName;
-                                workSheet.Cells[1, 20].Value = dts.Columns[19].ColumnName;
-                                workSheet.Cells[1, 21].Value = dts.Columns[20].ColumnName;
-                                workSheet.Cells[1, 22].Value = dts.Columns[21].ColumnName;
+                                workSheet.Cells[1, 1].Value =  dts.Columns[0].ColumnName.Substring(7, dts.Columns[0].ColumnName.Length - 11);
+                                workSheet.Cells[1, 2].Value = dts.Columns[1].ColumnName.Substring(7, dts.Columns[1].ColumnName.Length - 11);
+                                workSheet.Cells[1, 3].Value = dts.Columns[2].ColumnName.Substring(7, dts.Columns[2].ColumnName.Length - 11);
+                                workSheet.Cells[1, 11].Value = dts.Columns[3].ColumnName.Substring(7, dts.Columns[3].ColumnName.Length - 11);
+                                workSheet.Cells[1, 5].Value = dts.Columns[4].ColumnName.Substring(7, dts.Columns[4].ColumnName.Length - 11);
+                                workSheet.Cells[1, 6].Value = dts.Columns[5].ColumnName.Substring(7, dts.Columns[5].ColumnName.Length - 11);
+                                workSheet.Cells[1, 7].Value = dts.Columns[6].ColumnName.Substring(7, dts.Columns[6].ColumnName.Length - 11);
+                                workSheet.Cells[1, 8].Value = dts.Columns[7].ColumnName.Substring(7, dts.Columns[7].ColumnName.Length - 11);
+                                workSheet.Cells[1, 9].Value = dts.Columns[8].ColumnName.Substring(7, dts.Columns[8].ColumnName.Length - 11);
+                                workSheet.Cells[1, 10].Value = dts.Columns[9].ColumnName.Substring(7, dts.Columns[9].ColumnName.Length - 11);
+                                workSheet.Cells[1, 11].Value = dts.Columns[10].ColumnName.Substring(7, dts.Columns[10].ColumnName.Length - 11);
+                                workSheet.Cells[1, 12].Value = dts.Columns[11].ColumnName.Substring(7, dts.Columns[11].ColumnName.Length - 11);
+                                workSheet.Cells[1, 13].Value = dts.Columns[12].ColumnName.Substring(7, dts.Columns[12].ColumnName.Length - 11);
+                                workSheet.Cells[1, 111].Value = dts.Columns[13].ColumnName.Substring(7, dts.Columns[13].ColumnName.Length - 11);
+                                workSheet.Cells[1, 15].Value = dts.Columns[14].ColumnName.Substring(7, dts.Columns[14].ColumnName.Length - 11);
+                                workSheet.Cells[1, 16].Value = dts.Columns[15].ColumnName.Substring(7, dts.Columns[15].ColumnName.Length - 11);
+                                workSheet.Cells[1, 17].Value = dts.Columns[16].ColumnName.Substring(7, dts.Columns[16].ColumnName.Length - 11);
+                                workSheet.Cells[1, 18].Value = dts.Columns[17].ColumnName.Substring(7, dts.Columns[17].ColumnName.Length - 11);
+                                workSheet.Cells[1, 19].Value = dts.Columns[18].ColumnName.Substring(7, dts.Columns[18].ColumnName.Length - 11);
+                                workSheet.Cells[1, 20].Value = dts.Columns[19].ColumnName.Substring(7, dts.Columns[19].ColumnName.Length - 11);
+                                workSheet.Cells[1, 21].Value = dts.Columns[20].ColumnName.Substring(7, dts.Columns[20].ColumnName.Length - 11);
+                                workSheet.Cells[1, 22].Value = dts.Columns[21].ColumnName.Substring(7, dts.Columns[21].ColumnName.Length - 11);
 
                                 //Body of table  
                                 int recordIndex = 2;

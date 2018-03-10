@@ -9,7 +9,7 @@ namespace TranslationFileGen
 {
     public partial class ManageTables : System.Web.UI.Page
     {
-        public string connString = "Data Source=C:\\TFG\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
+        public string connString = "Data Source=C:\\Learn\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -580,7 +580,8 @@ namespace TranslationFileGen
         protected void btnCategoryImport_Click(object sender, EventArgs e)
         {
             SQLiteCommand cmd = null;
-            string code, cat01 = string.Empty, cat02 = string.Empty, cat03 = string.Empty;
+            string code, category = string.Empty, cat01 = string.Empty, cat02 = string.Empty, cat03 = string.Empty;
+            int level = 0;
             try
             {
                 string filecontent = Convert.ToBase64String(uploadFileCategory.FileBytes);
@@ -606,27 +607,46 @@ namespace TranslationFileGen
                                 foreach (DataRow row in dt.Rows)
                                 {
                                     code = Convert.ToString(row["Code"]);
+                                    category = Convert.ToString(row["Category"]);
+                                    level = string.IsNullOrEmpty(Convert.ToString(row["Level"])) ? 0 : Convert.ToInt32(row["Level"]);
+
                                     cmd.Parameters.AddWithValue("@Code", code);
-                                    cmd.Parameters.AddWithValue("@Category", Convert.ToString(row["Category"]));
-                                    cmd.Parameters.AddWithValue("@Level", string.IsNullOrEmpty(Convert.ToString(row["Level"])) ? 0 : Convert.ToInt32(row["Level"]));
+                                    cmd.Parameters.AddWithValue("@Category", category);
+                                    cmd.Parameters.AddWithValue("@Level", level);
                                     cmd.CommandText = "INSERT INTO tblCategory_Raw (Category, Code, Level) SELECT @Category, @Code, @Level \n WHERE NOT EXISTS (SELECT 1 FROM tblCategory_Raw WHERE Code = @Code);";
                                     cmd.ExecuteNonQuery();
 
-                                    switch(code.Length)
+                                    switch (level)
                                     {
-                                        case 6:
-                                            cat01 = code.Substring(0, 2);
-                                            cat02 = code.Substring(0, 4);
-                                            cat03 = code.Substring(0, 6);
-                                            break;
-                                        case 4:
-                                            cat01 = code.Substring(0, 2);
-                                            cat02 = code.Substring(0, 4);
+                                        case 1:
+                                            cat01 = code;
+                                            cat02 = "";
+                                            cat03 = "";
                                             break;
                                         case 2:
-                                            cat01 = code.Substring(0, 2);
+                                            cat02 = code;
+                                            cat03 = "";
                                             break;
-                                    }   
+                                        case 3:
+                                            cat03 = code;
+                                            break;
+                                    }
+
+                                    //switch (code.Length)
+                                    //{
+                                    //    case 6:
+                                    //        cat01 = code.Substring(0, 2);
+                                    //        cat02 = code.Substring(0, 4);
+                                    //        cat03 = code.Substring(0, 6);
+                                    //        break;
+                                    //    case 4:
+                                    //        cat01 = code.Substring(0, 2);
+                                    //        cat02 = code.Substring(0, 4);
+                                    //        break;
+                                    //    case 2:
+                                    //        cat01 = code.Substring(0, 2);
+                                    //        break;
+                                    //}   
 
                                     cmd.Parameters.Clear();
                                     cmd.Parameters.AddWithValue("@cat01", cat01);

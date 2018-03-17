@@ -23,6 +23,7 @@ namespace TranslationFileGen
             SQLiteCommand cmd = null;
             try
             {
+                ErroMsg.Text = "";
                 string filecontent = Convert.ToBase64String(uploadFile.FileBytes);
 
                 if (Path.GetExtension(uploadFile.FileName).Equals(".xlsx"))

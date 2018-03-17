@@ -10,7 +10,7 @@ namespace TranslationFileGen
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        public string connString = "Data Source=C:\\Learn\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
+        public string connString = "Data Source=C:\\TFG\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -296,10 +296,11 @@ namespace TranslationFileGen
                     }
                 }
                 else
-                    Msg.Text = "Please select valid excel file.";
+                    ErroMsg.Text = "Please select valid excel file.";
             }
             catch (Exception ex)
             {
+                ErroMsg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
                 throw;
             }
             finally

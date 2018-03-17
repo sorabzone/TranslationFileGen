@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Manage Tables" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="ManageTables.aspx.cs" Inherits="TranslationFileGen.ManageTables" %>
+﻿<%@ Page Title="Manage Tables" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="ManageTables.aspx.cs" Inherits="TranslationFileGen.ManageTables" ValidateRequest="false" EnableViewStateMac="false" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">\
     <script>
@@ -234,7 +234,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label class="text-muted">New Meta Data</label></td>
+                                            <label class="text-muted">Meta Data</label></td>
                                         <td>
                                             <asp:TextBox ID="txtMetaData" runat="server" class="form-control" placeholder="Meta Data"></asp:TextBox></td>
                                         <td>

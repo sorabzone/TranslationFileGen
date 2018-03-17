@@ -9,13 +9,37 @@ namespace TranslationFileGen
 {
     public partial class ManageTables : System.Web.UI.Page
     {
-        public string connString = "Data Source=C:\\Learn\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
+        public string connString = "Data Source=C:\\TFG\\TranslationFileGen\\TranslationFileGen\\App_Data\\TranslationData.db;Version=3;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Msg.Text = "";
-            successMsg.Text = "";
-            if (!IsPostBack)
+            try
+            {
+                Msg.Text = "";
+                successMsg.Text = "";
+                if (!IsPostBack)
+                {
+                    mvTables.ActiveViewIndex = 0;
+                    Tab1.Enabled = false;
+                    Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
+                    Tab2.Enabled = true;
+                    Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                    Tab3.Enabled = true;
+                    Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                    Tab4.Enabled = true;
+                    Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                }
+            }
+            catch (Exception ex)
+            {
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
+            }
+        }
+
+        #region Tab Change Events
+        protected void Tab1_Click(object sender, EventArgs e)
+        {
+            try
             {
                 mvTables.ActiveViewIndex = 0;
                 Tab1.Enabled = false;
@@ -27,59 +51,70 @@ namespace TranslationFileGen
                 Tab4.Enabled = true;
                 Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
             }
-        }
-
-        #region Tab Change Events
-        protected void Tab1_Click(object sender, EventArgs e)
-        {
-            mvTables.ActiveViewIndex = 0;
-            Tab1.Enabled = false;
-            Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
-            Tab2.Enabled = true;
-            Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab3.Enabled = true;
-            Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab4.Enabled = true;
-            Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            catch (Exception ex)
+            {
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
+            }
         }
 
         protected void Tab2_Click(object sender, EventArgs e)
         {
-            mvTables.ActiveViewIndex = 1;
-            Tab1.Enabled = true;
-            Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab2.Enabled = false;
-            Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
-            Tab3.Enabled = true;
-            Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab4.Enabled = true;
-            Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            try
+            {
+                mvTables.ActiveViewIndex = 1;
+                Tab1.Enabled = true;
+                Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                Tab2.Enabled = false;
+                Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
+                Tab3.Enabled = true;
+                Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                Tab4.Enabled = true;
+                Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            }
+            catch (Exception ex)
+            {
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
+            }
         }
 
         protected void Tab3_Click(object sender, EventArgs e)
         {
-            mvTables.ActiveViewIndex = 2;
-            Tab1.Enabled = true;
-            Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab2.Enabled = true;
-            Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab3.Enabled = false;
-            Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
-            Tab4.Enabled = true;
-            Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            try
+            {
+                mvTables.ActiveViewIndex = 2;
+                Tab1.Enabled = true;
+                Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                Tab2.Enabled = true;
+                Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                Tab3.Enabled = false;
+                Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
+                Tab4.Enabled = true;
+                Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+            }
+            catch (Exception ex)
+            {
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
+            }
         }
 
         protected void Tab4_Click(object sender, EventArgs e)
         {
-            mvTables.ActiveViewIndex = 3;
-            Tab1.Enabled = true;
-            Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab2.Enabled = true;
-            Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab3.Enabled = true;
-            Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
-            Tab4.Enabled = false;
-            Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
+            try
+            {
+                mvTables.ActiveViewIndex = 3;
+                Tab1.Enabled = true;
+                Tab1.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                Tab2.Enabled = true;
+                Tab2.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                Tab3.Enabled = true;
+                Tab3.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "blue";
+                Tab4.Enabled = false;
+                Tab4.Attributes.CssStyle[HtmlTextWriterStyle.Color] = "gray";
+            }
+            catch (Exception ex)
+            {
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
+            }
         }
         #endregion
 
@@ -90,6 +125,7 @@ namespace TranslationFileGen
             SQLiteCommand cmd = null;
             try
             {
+                txtImage.Text = "";
                 if (!(String.IsNullOrEmpty(txtSku.Text)))
                 {
                     using (var conn = new SQLiteConnection(connString))
@@ -104,6 +140,8 @@ namespace TranslationFileGen
                             {
                                 txtImage.Text = Convert.ToString(objReader["image_id"]);
                             }
+                            else
+                                Msg.Text = "Record not found.";
                         }
                         conn.Close();
                     }
@@ -113,14 +151,14 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
-                if(cmd != null)
+                if (cmd != null)
                     cmd.Dispose();
 
-                if(objReader != null)
+                if (objReader != null)
                     objReader = null;
             }
         }
@@ -137,7 +175,9 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "UPDATE tblSKU_ImageID SET Image_Id = " + txtImage.Text + ", UpdatedDate = CURRENT_TIMESTAMP WHERE SKU = '" + txtSku.Text + "';";
+                            cmd.Parameters.AddWithValue("@SKU", txtSku.Text);
+                            cmd.Parameters.AddWithValue("@Image_Id", txtImage.Text);
+                            cmd.CommandText = "UPDATE tblSKU_ImageID SET Image_Id = @Image_Id, UpdatedDate = CURRENT_TIMESTAMP WHERE SKU = @SKU;";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -148,7 +188,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -169,7 +209,9 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "INSERT INTO tblSKU_ImageID (SKU, Image_Id, UpdatedDate) VALUES ('" + txtNewSku.Text + "', '" + txtNewImage.Text + "', CURRENT_TIMESTAMP);";
+                            cmd.Parameters.AddWithValue("@SKU", txtNewSku.Text);
+                            cmd.Parameters.AddWithValue("@Image_Id", txtNewImage.Text);
+                            cmd.CommandText = "INSERT INTO tblSKU_ImageID (SKU, Image_Id, UpdatedDate) VALUES (@SKU, @Image_Id, CURRENT_TIMESTAMP);";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -180,7 +222,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -200,7 +242,7 @@ namespace TranslationFileGen
                 {
                     var excel = new ExcelPackage(uploadFile.FileContent);
                     var dt = excel.ToDataTable();
-                    
+
                     using (var conn = new SQLiteConnection(connString))
                     {
                         conn.Open();
@@ -208,7 +250,7 @@ namespace TranslationFileGen
                         {
                             using (var transaction = conn.BeginTransaction())
                             {
-                                if(hdnReplace.Value.Equals("1"))
+                                if (hdnReplace.Value.Equals("1"))
                                 {
                                     cmd.CommandText = "DELETE FROM tblSKU_ImageID;";
                                     cmd.ExecuteNonQuery();
@@ -221,7 +263,7 @@ namespace TranslationFileGen
                                     cmd.Parameters.AddWithValue("@SKU", Convert.ToString(row["SKU"]));
                                     cmd.Parameters.AddWithValue("@Image_Id", Convert.ToString(row["Image_Id"]));
                                     cmd.Parameters.AddWithValue("@Date", oDate.ToString("yyyy-MM-dd HH:mm:ss"));
-                                    
+
                                     cmd.CommandText = "INSERT INTO tblSKU_ImageID (SKU, Image_Id, UpdatedDate) SELECT @SKU, @Image_Id, @Date \n WHERE NOT EXISTS (SELECT 1 FROM tblSKU_ImageID WHERE SKU = @SKU);";
                                     cmd.ExecuteNonQuery();
                                 }
@@ -237,7 +279,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -255,6 +297,9 @@ namespace TranslationFileGen
             SQLiteCommand cmd = null;
             try
             {
+                Msg.Text = "";
+                txtChineseName.Text = "";
+                txtChineseDesc.Text = "";
                 if (!(String.IsNullOrEmpty(txtSkuC.Text)))
                 {
                     using (var conn = new SQLiteConnection(connString))
@@ -270,6 +315,8 @@ namespace TranslationFileGen
                                 txtChineseName.Text = Convert.ToString(objReader["ChineseName"]);
                                 txtChineseDesc.Text = Convert.ToString(objReader["ChineseDesc"]);
                             }
+                            else
+                                Msg.Text = "Record not found.";
                         }
                         conn.Close();
                     }
@@ -279,7 +326,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -303,7 +350,10 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "UPDATE tblSKU_Chinese SET ChineseName = " + txtChineseName.Text + ", ChineseDesc = " + txtChineseDesc.Text + ", UpdatedDate = CURRENT_TIMESTAMP WHERE SKU = '" + txtSkuC.Text + "';";
+                            cmd.Parameters.AddWithValue("@ProductSKU", txtSkuC.Text);
+                            cmd.Parameters.AddWithValue("@ChineseName", txtChineseName.Text);
+                            cmd.Parameters.AddWithValue("@ChineseLongName", txtChineseDesc.Text);
+                            cmd.CommandText = "UPDATE tblSKU_Chinese SET ChineseName = @ChineseName, ChineseDesc = @ChineseLongName, UpdatedDate = CURRENT_TIMESTAMP WHERE SKU = @ProductSKU;";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -314,7 +364,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -335,7 +385,10 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "INSERT INTO tblSKU_Chinese (SKU, ChineseName, ChineseDesc, Updateddate) VALUES ('" + txtNewSkuC.Text + "', '" + txtNewChineseName.Text + "', '" + txtNewChineseDesc.Text + "', CURRENT_TIMESTAMP);";
+                            cmd.Parameters.AddWithValue("@ProductSKU", txtNewSkuC.Text);
+                            cmd.Parameters.AddWithValue("@ChineseName", txtNewChineseName.Text);
+                            cmd.Parameters.AddWithValue("@ChineseLongName", txtNewChineseDesc.Text);
+                            cmd.CommandText = "INSERT INTO tblSKU_Chinese (SKU, ChineseName, ChineseDesc, Updateddate) VALUES (@ProductSKU, @ChineseName, @ChineseLongName, CURRENT_TIMESTAMP);";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -346,7 +399,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -358,11 +411,11 @@ namespace TranslationFileGen
         protected void btnChineseImport_Click(object sender, EventArgs e)
         {
             SQLiteCommand cmd = null;
-            
+
             try
             {
                 string filecontent = Convert.ToBase64String(uploadFileChinese.FileBytes);
-                
+
                 if (Path.GetExtension(uploadFileChinese.FileName).Equals(".xlsx"))
                 {
                     var excel = new ExcelPackage(uploadFileChinese.FileContent);
@@ -402,7 +455,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -420,6 +473,7 @@ namespace TranslationFileGen
             SQLiteCommand cmd = null;
             try
             {
+                txtChineseTrans.Text = "";
                 if (!(String.IsNullOrEmpty(txtMetaData.Text)))
                 {
                     using (var conn = new SQLiteConnection(connString))
@@ -434,6 +488,8 @@ namespace TranslationFileGen
                             {
                                 txtChineseTrans.Text = Convert.ToString(objReader["ChineseName"]);
                             }
+                            else
+                                Msg.Text = "Record not found";
                         }
                         conn.Close();
                     }
@@ -443,7 +499,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -467,7 +523,9 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "UPDATE tblMetadata SET ChineseName = " + txtChineseTrans.Text + " WHERE EnglishName = '" + txtMetaData.Text + "';";
+                            cmd.Parameters.AddWithValue("@EnglishName", txtMetaData.Text);
+                            cmd.Parameters.AddWithValue("@ChineseName", txtChineseTrans.Text);
+                            cmd.CommandText = "UPDATE tblMetadata SET ChineseName = @ChineseName WHERE EnglishName = @EnglishName;";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -478,7 +536,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -499,7 +557,9 @@ namespace TranslationFileGen
                         conn.Open();
                         using (cmd = new SQLiteCommand(conn))
                         {
-                            cmd.CommandText = "INSERT INTO tblMetadata (EnglishName, ChineseName) VALUES ('" + txtNewMetaData.Text + "', '" + txtNewChineseTrans.Text + "');";
+                            cmd.Parameters.AddWithValue("@EnglishName", txtNewMetaData.Text);
+                            cmd.Parameters.AddWithValue("@ChineseName", txtNewChineseTrans.Text);
+                            cmd.CommandText = "INSERT INTO tblMetadata (EnglishName, ChineseName) VALUES (@EnglishName, @ChineseName);";
                             cmd.ExecuteNonQuery();
                         }
                         conn.Close();
@@ -510,7 +570,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -565,7 +625,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {
@@ -669,7 +729,7 @@ namespace TranslationFileGen
             }
             catch (Exception ex)
             {
-                throw;
+                Msg.Text = ex.Message + "\n Stack Trace: " + ex.StackTrace;
             }
             finally
             {

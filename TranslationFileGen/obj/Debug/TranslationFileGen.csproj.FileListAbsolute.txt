@@ -186,3 +186,4 @@ C:\Learn\TranslationFileGen\TranslationFileGen\bin\Microsoft.AI.Web.xml
 C:\Learn\TranslationFileGen\TranslationFileGen\obj\Debug\TranslationFileGen.csproj.CoreCompileInputs.cache
 C:\Learn\TranslationFileGen\TranslationFileGen\obj\Debug\TranslationFileGen.dll
 C:\Learn\TranslationFileGen\TranslationFileGen\obj\Debug\TranslationFileGen.pdb
+C:\TFG\TranslationFileGen\TranslationFileGen\obj\Debug\TranslationFileGen.csprojResolveAssemblyReference.cache
